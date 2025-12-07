@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { ApiFacade } from '../../../../facade/ApiFacade';
-import { UserBuilder } from '../../../../builders/UserBuilder';
+import { ApiFacade } from '../../../facade/ApiFacade';
+import { UserBuilder } from '../../../builders/UserBuilder';
 
 test.describe('parentSuite / suite / subSuite - API tests', () => {
   test('create user via GraphQL', async () => {

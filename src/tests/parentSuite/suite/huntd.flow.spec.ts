@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { HuntdPage } from '../../../../pages/HuntdPage';
-import { UserBuilder } from '../../../../builders/UserBuilder';
-import { ApiFacade } from '../../../../facade/ApiFacade';
+import { HuntdPage } from '../../../pages/HuntdPage';
+import { UserBuilder } from '../../../builders/UserBuilder';
+import { ApiFacade } from '../../../facade/ApiFacade';
 
 /**
  * End-to-end flow tests for Huntd functionality.

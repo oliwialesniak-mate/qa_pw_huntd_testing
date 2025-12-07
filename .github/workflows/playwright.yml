@@ -2,11 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches:
-      - task_solution
+    branches: [ task_solution ]
   pull_request:
-    branches:
-      - task_solution
+    branches: [ task_solution ]
 
 jobs:
   test:
@@ -14,10 +12,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Setup Node
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: '18'
 
       - name: Install dependencies
         run: npm ci
@@ -25,24 +23,27 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Start app (optional)
-        # If your app can be started in the repository, start it here.
-        # Otherwise, remove these steps and set HUNTD_BASE_URL to a running environment.
+      - name: Install OpenJDK and Allure CLI
         run: |
-          echo "Skipping app start in workflow. Set HUNTD_BASE_URL to running environment if needed."
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jre-headless wget unzip
+          npm install -g allure-commandline --unsafe-perm=true
 
-      - name: Run Playwright tests
+      - name: Run Playwright tests with Allure
         env:
           HUNTD_BASE_URL: ${{ secrets.HUNTD_BASE_URL }}
-        run: npx playwright test --reporter=html,junit
+        run: npx playwright test --reporter=allure-playwright
 
-      - name: Upload Playwright HTML report
+      - name: Generate Allure report
+        run: allure generate allure-results -o allure-report --clean
+
+      - name: Upload Allure report
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
-          path: playwright-report
+          name: allure-report
+          path: allure-report
 
-      - name: Upload JUnit report
+      - name: Upload JUnit results
         uses: actions/upload-artifact@v4
         with:
           name: junit-results
