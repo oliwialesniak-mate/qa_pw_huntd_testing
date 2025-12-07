@@ -1,0 +1,49 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches:
+      - task_solution
+  pull_request:
+    branches:
+      - task_solution
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Start app (optional)
+        # If your app can be started in the repository, start it here.
+        # Otherwise, remove these steps and set HUNTD_BASE_URL to a running environment.
+        run: |
+          echo "Skipping app start in workflow. Set HUNTD_BASE_URL to running environment if needed."
+
+      - name: Run Playwright tests
+        env:
+          HUNTD_BASE_URL: ${{ secrets.HUNTD_BASE_URL }}
+        run: npx playwright test --reporter=html,junit
+
+      - name: Upload Playwright HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+
+      - name: Upload JUnit report
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: test-results/results.xml

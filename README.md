@@ -38,3 +38,15 @@ npm install -g allure-commandline
 ## How to generate report
 
 // TODO
+# Huntd Playwright Test Suite
+
+## Prerequisites
+- Node 18+
+- Docker (if you want to run tests in Docker)
+- A running Huntd application accessible from your machine (set `HUNTD_BASE_URL` accordingly)
+
+## Install
+```bash
+git checkout -b task_solution
+npm ci
+npx playwright install
